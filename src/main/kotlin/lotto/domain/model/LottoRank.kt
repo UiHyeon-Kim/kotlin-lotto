@@ -3,7 +3,7 @@ package lotto.domain.model
 import lotto.common.util.toWon
 
 enum class LottoRank(
-    private val prizeAmount: Int,
+    val prizeAmount: Int,
     private val matchCount: Int,
     private val hasBonusMatch: Boolean = false
 ) {
