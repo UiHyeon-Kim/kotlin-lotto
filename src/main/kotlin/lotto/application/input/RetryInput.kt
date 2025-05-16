@@ -1,4 +1,4 @@
-package lotto.domain.utils
+package lotto.application.input
 
 fun <T> retryInput(
     read: () -> String,
