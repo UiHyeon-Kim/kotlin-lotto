@@ -7,12 +7,12 @@ class InputView {
     }
 
     fun readWinningNumbers(): String {
-        println("당첨 번호를 입력해 주세요.")
+        println("\n당첨 번호를 입력해 주세요.")
         return readln()
     }
 
     fun readBonusNumber(): String {
-        println("보너스 번호를 입력해 주세요.")
+        println("\n보너스 번호를 입력해 주세요.")
         return readln()
     }
 }
