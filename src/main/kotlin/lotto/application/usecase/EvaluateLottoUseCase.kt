@@ -8,13 +8,12 @@ import lotto.domain.model.LottoRank
 class EvaluateLottoUseCase {
     operator fun invoke(
         myLotteries: List<Lotto>,
-        winning: Lotto,
-        bonusNumber: Int
+        lottery: LotteryResult
     ): Map<LottoRank, Int> {
         val result = mutableMapOf<LottoRank, Int>()
         myLotteries.forEach { lotto ->
-            val matchCount = lotto.numbers.count { it in winning.numbers }
-            val hasBonus = bonusNumber in lotto.numbers
+            val matchCount = lotto.numbers.count { it in lottery.winning.numbers }
+            val hasBonus = lottery.bonus in lotto.numbers
             val currentRank = LottoRank.from(matchCount, hasBonus)
             currentRank?.let { result.merge(it, DEFAULT_VALUE) { oldValue, newValue -> oldValue + newValue } }
         }

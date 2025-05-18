@@ -7,6 +7,7 @@ import lotto.application.usecase.EvaluateLottoUseCase
 import lotto.application.usecase.PurchaseLottoUseCase
 import lotto.domain.model.Lotto
 import lotto.domain.model.LottoFactory
+import lotto.domain.model.LotteryResult
 import lotto.presentation.view.InputView
 import lotto.presentation.view.OutputView
 
@@ -17,26 +18,25 @@ class LottoController(
     private val evaluate: EvaluateLottoUseCase
 ) {
     fun run() {
-        val (amount: Int, myLotteries) = purchaseLottoFlow()
-        val (winningNumbers: Lotto, bonusNumber: Int) = drawWinningNumbersFlow()
-        evaluateWinningFlow(myLotteries, winningNumbers, bonusNumber, amount)
+        val (amount, myLotteries) = purchaseLottoFlow()
+        val lotteryResult = drawWinningNumbersFlow()
+        evaluateWinningFlow(myLotteries, lotteryResult, amount)
     }
 
     private fun evaluateWinningFlow(
         myLotteries: List<Lotto>,
-        winningNumbers: Lotto,
-        bonusNumber: Int,
+        lotteryResult: LotteryResult,
         amount: Int
     ) {
-        val winningResults = evaluate(myLotteries, winningNumbers, bonusNumber)
+        val winningResults = evaluate(myLotteries, lotteryResult)
         val returnRate = evaluate.calculateReturnRate(winningResults, amount)
         outputView.printWinningStatistics(winningResults, returnRate)
     }
 
-    private fun drawWinningNumbersFlow(): Pair<Lotto, Int> {
+    private fun drawWinningNumbersFlow(): LotteryResult {
         val winningNumbers: Lotto = getInput(WinningNumbers).run { LottoFactory.from(this) }
         val bonusNumber: Int = getInput(BonusNumber(winningNumbers))
-        return Pair(winningNumbers, bonusNumber)
+        return LotteryResult(winningNumbers, bonusNumber)
     }
 
     private fun purchaseLottoFlow(): Pair<Int, List<Lotto>> {
