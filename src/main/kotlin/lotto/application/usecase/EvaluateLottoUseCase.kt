@@ -1,5 +1,7 @@
 package lotto.application.usecase
 
+import lotto.common.constants.Constants.DEFAULT_VALUE
+import lotto.domain.model.LotteryResult
 import lotto.domain.model.Lotto
 import lotto.domain.model.LottoRank
 
@@ -14,7 +16,7 @@ class EvaluateLottoUseCase {
             val matchCount = lotto.numbers.count { it in winning.numbers }
             val hasBonus = bonusNumber in lotto.numbers
             val currentRank = LottoRank.from(matchCount, hasBonus)
-            currentRank?.let { result.merge(it, 1) { oldValue, _ -> oldValue + 1 } }
+            currentRank?.let { result.merge(it, DEFAULT_VALUE) { oldValue, newValue -> oldValue + newValue } }
         }
         return result
     }
